@@ -1,4 +1,4 @@
 """
-Modulo utils: contiene funzioni di utilità per StudSar.
+Utils module: contains utility functions for studsar.
 """
 from .text import segment_text, SPACY_AVAILABLE

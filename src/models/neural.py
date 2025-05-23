@@ -23,14 +23,14 @@ class StudSarNeural(nn.Module):
         self.next_id = 0
         self.marker_id_to_index = {} # Map marker ID to tensor index
 
-        # --- NEWV2 ---
+        # --- NEW2 ---
         self.id_to_emotion = {} # Stores emotion tag per marker ID
         self.id_to_reputation = defaultdict(float) # Stores reputation score per marker ID, default 0.0
         self.id_to_usage = defaultdict(int) # Stores usage count per marker ID, default 0
         # --- AN2 ---
 
-        print(f"  Embedding dimension: {self.embedding_dim}")
-        print(f"  Initial capacity: {initial_capacity} markers")
+        print(f"Embedding dimension: {self.embedding_dim}")
+        print(f"Initial capacity: {initial_capacity} markers")
 
     def _ensure_capacity(self, required_index):
         """Dynamically increases memory capacity if needed."""
@@ -40,11 +40,9 @@ class StudSarNeural(nn.Module):
             print(f"    Resizing memory_embeddings from {current_capacity} to {new_capacity}")
             new_embeddings = torch.zeros(new_capacity, self.embedding_dim, device=self.device)
             new_embeddings[:current_capacity] = self.memory_embeddings
-            # We need to re-assign to update the buffer correctly
-            # del self.memory_embeddings # Deregister old buffer (optional, PyTorch might handle this)
             self.register_buffer('memory_embeddings', new_embeddings) # Register new buffer
 
-    #  EDIT V2: Added emotion parameter 
+    # V2: Added emotion parameter 
     def add_marker(self, segment_text, embedding, emotion=None):
         """Adds a new marker (segment + embedding) to the memory."""
         if not segment_text or embedding is None:

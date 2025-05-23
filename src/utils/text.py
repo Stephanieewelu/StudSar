@@ -1,11 +1,11 @@
 """
-Modulo di utilità per la segmentazione del testo in StudSar.
+Text segmentation utility module in StudSar.
 """
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
-# Tentativo di importare spaCy, ma gestito come opzionale
+# Here I made an attempt to import spaCy, but it handled as optional
 try:
     import spacy
     SPACY_MODEL_NAME = "en_core_web_sm"
@@ -24,26 +24,26 @@ except ImportError:
     print("SpaCy not installed. Word segmentation will be used as fallback.")
     print("To install spaCy (optional): pip install spacy && python -m spacy download en_core_web_sm")
 
-# --- NEWV2: Placeholder for Transformer Segmentation ---
+# NEWV2: Placeholder for Transformer Segmentation 
 def segment_text_transformer_placeholder(text):
     """Placeholder function for transformer-based segmentation."""
     print("\n--- Using Transformer Segmentation (Placeholder) ---")
     print("WARNING: Transformer segmentation model not implemented. Falling back to basic segmentation.")
     # In a real implementation:
-    # 1. Load the fine-tuned transformer model.
-    # 2. Tokenize the input text.
-    # 3. Use the model to predict segment boundaries.
-    # 4. Split the text based on predictions.
+    # - Load the fine-tuned transformer model.
+    # - Tokenize the input text.
+    # - Use the model to predict segment boundaries.
+    # - Split the text based on predictions.
     # segments = model.predict_segments(text)
     # return segments
     # Fallback for now:
     return segment_text(text, use_spacy=False) # Use word-based as fallback here
-# --- AN2 ---
+#  end  
 
 def segment_text(text, segment_length=100, use_spacy=True, spacy_sentences_per_segment=3):
     """Segments the text (words or sentences via spaCy)."""
     segments = []
-    #  spaCy for the user
+    #  heare -> spaCy for the user
     if use_spacy and SPACY_AVAILABLE and nlp:
         try:
             doc = nlp(text)

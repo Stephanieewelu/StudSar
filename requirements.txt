@@ -1,10 +1,11 @@
-# Versioni minime compatibili con Python 3.13 senza necessità di compilazione
 sentence-transformers
 numpy
 torch --extra-index-url https://download.pytorch.org/whl/cpu
+transformers>=4.40
 scikit-learn
-
-# Installare spaCy separatamente con:
-# pip install spacy
-# python -m spacy download en_core_web_sm
-
+networkx
+matplotlib
+langchain-community
+langchain-core
+pypdf
+beautifulsoup4

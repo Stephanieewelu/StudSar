@@ -2,18 +2,12 @@ import os
 import torch
 from sentence_transformers import SentenceTransformer
 import traceback
-import random # Import random for Dream Mode example
-from collections import defaultdict # Import defaultdict for loading V2 state
+import random #This Import random for Dream Mode example
+from collections import defaultdict # this for ex studsar V2 state
 from ..models.neural import StudSarNeural
-from ..utils.text import segment_text, SPACY_AVAILABLE # Correct import added
+from ..utils.text import segment_text, SPACY_AVAILABLE 
 
-# 1. New V2 UPDATE: Import segmentation (placeholder) 
-# from ..utils.text import segment_text # Old import - REMOVED
-# from ..utils.text import segment_text_transformer_placeholder as segment_text # New import (placeholder) - REMOVED
-# END V2 UPDATE
-#  NEW V2 ADDITION: Import for visualization (placeholder) 
-# from ..utils.visualization import plot_semantic_graph # Placeholder
-#  END V2 ADDITION 
+# 1. New  ex V2 Studsar  
 
 class StudSarManager:
     """
@@ -28,30 +22,31 @@ class StudSarManager:
         self.embedding_dim = self.embedding_generator.get_sentence_embedding_dimension()
         # Initialize StudSar neural network
         self.studsar_network = StudSarNeural(self.embedding_dim, initial_capacity, device=self.device).to(self.device)
-        # --- NUOVA AGGIUNTA V2: Placeholder per modello di segmentazione ---
+        self.text_processor = self
+        self.embedding_model = self.embedding_generator
+        #  New  V2: Placeholder per modello di segmentazione 
         self.segmentation_model = None # Caricare qui il modello transformer addestrato
         # try:
         #     # self.segmentation_model = load_segmentation_model("path/to/segmentation_model.pth")
         #     print("Transformer segmentation model loaded (placeholder).")
         # except Exception as e:
         #     print(f"Warning: Could not load transformer segmentation model: {e}. Using fallback.")
-        # --- FINE AGGIUNTA V2 ---
+        # Stop Add V2 
 
 
         print(f"\n--- StudSarManager Initialization ---")
         print(f"Embedding Generator Model: {model_name} (Dim: {self.embedding_dim})")
         print(f"StudSarNeural network ready on device: {self.studsar_network.device}")
-        print(f"-----------------------------------\n")
+        print(f" void non Marvel \n")
 
     def generate_embedding(self, text):
         """Generates embedding for a text using loaded model."""
         if not text or not isinstance(text, str): return None
-        # Ensure the model is on the correct device before encoding
+        #  before encoding
         self.embedding_generator.to(self.device)
         embedding = self.embedding_generator.encode(text, convert_to_tensor=True, device=self.device)
-        # Return as numpy array for compatibility or keep as tensor if network handles it
+        # Return as numpy array for compatibility 
         return embedding.cpu().numpy()
-
 
     # EDIT V2: Added default emotion, use new segmentation ---
     def build_network_from_text(self, text, segment_length=100, use_spacy_segmentation=True, spacy_sentences_per_segment=3, default_emotion=None):
@@ -63,7 +58,7 @@ class StudSarManager:
         # TODO: Implement network reset logic if needed, e.g., self.studsar_network.reset_memory()
         print("Preparing to build network...") # Placeholder message
 
-        # --- EDIT V2: Updated segmentation logic ---
+        # V2: Updated segmentation logic 
 # Use transformer model if loaded, otherwise fallback
         if self.segmentation_model:
              print("Using Transformer-based segmentation (placeholder)...")
@@ -73,8 +68,8 @@ class StudSarManager:
         else:
              print("Using standard segmentation...")
              # Use the imported segment_text function directly
-             segments = segment_text(text, segment_length=segment_length, use_spacy=use_spacy_segmentation, spacy_sentences_per_segment=spacy_sentences_per_segment)
-        # --- END OF MODIFICATION  V2 ---
+             segments = self.segment_text(text, segment_length=segment_length, use_spacy=use_spacy_segmentation, spacy_sentences_per_segment=spacy_sentences_per_segment)
+        # END OF MODIFICATION  V2 
 
         if not segments:
             print("No segments generated from text. Network not built.")
@@ -98,7 +93,6 @@ class StudSarManager:
         print(f"Network memory now contains: {self.studsar_network.get_total_markers()} markers.")
         print("--- Network Construction Complete ---\n")
 
-
     def search(self, query_text, k=1):
         """Performs a search in StudSar network."""
         print(f"\n--- Query Search ---")
@@ -120,15 +114,14 @@ class StudSarManager:
              print("No results found.")
         else:
             print(f"Found {len(marker_ids)} results:")
-            # --- NEWV2: Increment usage count for retrieved markers --- 
+            # V2: Increment usage count for retrieved markers --- 
             for mid in marker_ids:
                 self.studsar_network.increment_usage(mid) # Chiama il metodo in neural.py
-            # --- AN2 ---
-
+            
         print("--- Search Complete ---\n")
         return marker_ids, similarities, segments
 
-    # EDIT V2: Added emotion parameter
+    #  V2: Added emotion parameter
     def update_network(self, new_text_segment, emotion=None):
         """Adds a new segment to existing StudSar network."""
         print("\n--- Updating StudSar Network ---")
@@ -285,6 +278,9 @@ class StudSarManager:
             return None
     #  END NEW ADDITION V2  
 
+    def segment_text(self, text, segment_length=100, use_spacy=True, spacy_sentences_per_segment=3):
+        """Delegates to the global segment_text function."""
+        return segment_text(text, segment_length=segment_length, use_spacy=use_spacy, spacy_sentences_per_segment=spacy_sentences_per_segment)
 
     # NEW ADDITION V2: Hook for View  
     def visualize_graph(self, similarity_threshold=0.85, output_file="studsar_graph.png"):
@@ -348,12 +344,12 @@ class StudSarManager:
                    # embedding = details_dict.get("embedding") # Embedding is also available
 
                    print(f"\n--- Marker Details (ID: {marker_id}) ---")
-                   print(f"  Segment: '{segment[:100]}...'" )
-                   print(f"  Emotion: {emotion}")
-                   print(f"  Reputation: {reputation:.2f}")
-                   print(f"  Usage Count: {usage}")
+                   print(f"Segment: '{segment[:100]}...'" )
+                   print(f"Emotion: {emotion}")
+                   print(f"Reputation: {reputation:.2f}")
+                   print(f"Usage Count: {usage}")
                    # print(f"  Embedding Shape: {embedding.shape if embedding is not None else 'N/A'}") # Uncomment to see shape
-                   print(f"-------------------------------------\n")
+                   print(f" Void Embedding  \n")
                    return details_dict # Return the full dictionary
               else:
                    print(f"Marker ID {marker_id} not found.")

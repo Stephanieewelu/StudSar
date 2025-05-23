@@ -7,7 +7,7 @@ import os
 #You should add the main directory to the path here in order to import the StudSar package.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))  
 
-# Ora che il percorso è stato aggiunto, possiamo importare StudSarManager
+#  import StudSarManager
 from src.managers.manager import StudSarManager
 
 def run_example():
@@ -107,16 +107,16 @@ def run_example():
     studsar_manager.visualize_graph(output_file="studsar_example_graph.png") # Pass output file name
     # --- AN2 ---
 
-    # 6. SAVE STATE
+    # SAVE STATE
     save_path = "studsar_neural_demo.pth"
     studsar_manager.save(save_path)
 
-    # 7. DELETE AND RELOAD
+    # DELETE AND RELOAD
     del studsar_manager
     print("\nManager instance deleted. Attempting reload...")
     studsar_reloaded = StudSarManager.load(save_path)
 
-    # 8. VERIFY LOADING AND RE-EXECUTE QUERY
+    # VERIFY LOADING AND RE-EXECUTE QUERY
     if studsar_reloaded:
         print("\nStudSar instance successfully reloaded!")
         query_post_load = "What is the definition of AI?"
@@ -135,7 +135,7 @@ def run_example():
                  print(f"    (Loaded V2 Details: Rep={reputation_load:.2f}, Usage={usage_load}, Emotion={emotion_load})")
              else:
                  print(f"    Could not retrieve loaded details for marker {ids_post[0]}.")
-             # --- AN2 ---
+
         else:
             print("No results found for query post-load.")
     else:
