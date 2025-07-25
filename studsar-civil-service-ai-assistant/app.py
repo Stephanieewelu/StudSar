@@ -140,7 +140,7 @@ st.markdown("""
 
 # Sidebar with enhanced features
 with st.sidebar:
-    st.markdown("### 🎯 Quick Queries")
+    st.markdown("### Quick Queries")
     
     example_queries = {
         "What is the Civil Service?": "Learn about the UK Civil Service structure and role",
@@ -211,7 +211,7 @@ with st.sidebar:
         """)
 
 # Main chat interface
-st.markdown("### 💬 Chat with StudSar")
+st.markdown("### Chat with StudSar")
 
 # Display chat history
 for message in st.session_state.messages:
@@ -243,7 +243,7 @@ if 'next_query' in st.session_state and st.session_state.next_query:
     
     # Process and display assistant response
     with st.chat_message("assistant"):
-        with st.spinner("🔍 Analyzing your query..."):
+        with st.spinner(" Analyzing your query..."):
             response_data = st.session_state.studsar_engine.query(prompt)
             answer = response_data.get('answer', 'I apologize, but I could not process that request.')
             sources = response_data.get('sources', [])
