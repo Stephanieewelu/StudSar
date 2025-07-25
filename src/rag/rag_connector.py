@@ -201,6 +201,59 @@ class RAGConnector:
         meta = {"original_path": file_path, "type": doc_type, **(metadata_extra or {})}
         memorised = self._memorize_splits(splits, source_id, meta)
 
+        if memorised == 0:
+            logger.warning("No segments memorised from '%s'.", file_path)
+            return None
+
+        self.external_sources[source_id] = {
+            "path": file_path,
+            "type": doc_type,
+            "segments_memorized": memorised,
+            "metadata_extra": metadata_extra,
+        }
+        logger.info("Document '%s' (%s segments) added with source ID: %s.", file_path, memorised, source_id)
+        return source_id
+
+    def query(self, prompt: str, k: int = 5) -> List[Dict[str, Any]]:
+        """Query StudSar's memory via RAG."""
+        if not DEPS_OK:
+            logger.error("Cannot query, dependencies not satisfied.")
+            return []
+
+        try:
+            # Use StudSar's search method
+            marker_ids, similarities, segments = self.manager.search(prompt, k=k)
+            
+            formatted_results = []
+            for i in range(len(marker_ids)):
+                formatted_results.append({
+                    "content": segments[i],
+                    "similarity": similarities[i],
+                    "metadata": {"marker_id": marker_ids[i]} # Placeholder for actual metadata
+                })
+            return formatted_results
+        except Exception as err:
+            logger.error("Query error: %s", err, exc_info=True)
+            return []
+
+    def get_source_statistics(self) -> Dict[str, Any]:
+        """Return statistics about memorised sources and segments."""
+        total_sources = len(self.external_sources)
+        total_segments_memorized = sum(s['segments_memorized'] for s in self.external_sources.values())
+        by_type = {}
+        for source_info in self.external_sources.values():
+            source_type = source_info.get('type', 'unknown')
+            by_type[source_type] = by_type.get(source_type, 0) + source_info['segments_memorized']
+
+        return {
+            "total_sources": total_sources,
+            "total_segments_memorized": total_segments_memorized,
+            "by_type": by_type,
+        }
+
+        meta = {"original_path": file_path, "type": doc_type, **(metadata_extra or {})}
+        memorised = self._memorize_splits(splits, source_id, meta)
+
         if memorised:
             self.external_sources[source_id] = {
                 **meta,

@@ -4,10 +4,17 @@ from sentence_transformers import SentenceTransformer
 import traceback
 import random #This Import random for Dream Mode example
 from collections import defaultdict # this for ex studsar V2 state
-from ..models.neural import StudSarNeural
-from ..utils.text import segment_text, SPACY_AVAILABLE 
+from src.models.neural import StudSarNeural
+from src.utils.text import segment_text, SPACY_AVAILABLE
+import streamlit as st
 
-# 1. New  ex V2 Studsar  
+# 1. New  ex V2 Studsar
+
+@st.cache_resource
+def load_embedding_model(model_name='all-MiniLM-L6-v2'):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Loading embedding model on device: {device}")
+    return SentenceTransformer(model_name, device=device)
 
 class StudSarManager:
     """
@@ -18,7 +25,7 @@ class StudSarManager:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"StudSarManager will use device: {self.device}")
         # Load model to generate markers ("understanding" phase)
-        self.embedding_generator = SentenceTransformer(model_name, device=self.device)
+        self.embedding_generator = load_embedding_model(model_name)
         self.embedding_dim = self.embedding_generator.get_sentence_embedding_dimension()
         # Initialize StudSar neural network
         self.studsar_network = StudSarNeural(self.embedding_dim, initial_capacity, device=self.device).to(self.device)
@@ -32,6 +39,12 @@ class StudSarManager:
         # except Exception as e:
         #     print(f"Warning: Could not load transformer segmentation model: {e}. Using fallback.")
         # Stop Add V2 
+
+        # try:
+        #     self._emotion_pipe: Pipeline = pipeline(
+        #         task="sentiment-analysis",
+        #         model="cardiffnlp/twitter-roberta-base-sentiment-latest",
+        #         device=0 if torch.cuda.is_available() else -1,
 
 
         print(f"\n--- StudSarManager Initialization ---")
