@@ -11,7 +11,7 @@ class StudSAREngine:
         self.knowledge_base = self.load_knowledge_base()
         self.query_history = []
         
-    def load_knowledge_base(self) -> Dict[str, str]:
+    def load_knowledge_base(self) -> Dict[str, Dict[str, str]]:
         """Load knowledge base from JSON file or use default if file doesn't exist."""
         try:
             if os.path.exists(self.knowledge_base_path):
@@ -19,26 +19,32 @@ class StudSAREngine:
                     kb = json.load(f)
                     if not isinstance(kb, dict):
                         raise ValueError("Knowledge base JSON is not a dictionary.")
+                    # Ensure each entry has 'content' and 'url'
+                    for key, value in kb.items():
+                        if not isinstance(value, dict) or 'content' not in value or 'url' not in value:
+                            raise ValueError(f"Knowledge base entry '{key}' is not in the expected format.")
                     return kb
             else:
                 print(f"Knowledge base file not found at {self.knowledge_base_path}. Using default.")
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {self.knowledge_base_path}: {e}. Using default.")
+        except ValueError as e:
+            print(f"Knowledge base format error: {e}. Using default.")
         except Exception as e:
             print(f"An unexpected error occurred loading knowledge base: {e}. Using default.")
         
         # Fallback to default knowledge base if file not found or error occurs
         return {
-            "civil_service_overview": "The UK Civil Service is the permanent executive arm of His Majesty's Government. It supports the government of the day in developing and implementing policies, delivering public services, and supporting British interests abroad. Civil servants are politically impartial and serve the government of the day, whatever its political persuasion. Key values include integrity, honesty, objectivity, and impartiality.",
-            "civil_service_code": "The Civil Service Code sets out the core values and standards of behaviour expected of all civil servants. These values are: Integrity (putting public service before personal interests), Honesty (being truthful and open), Objectivity (basing advice and decisions on evidence), and Impartiality (acting solely according to the merits of the case). The Code requires civil servants to serve the government of the day, act in a way that deserves public trust, comply with the law, and not misuse official position or information.",
-            "green_book": "The Green Book is HM Treasury guidance on how to appraise policies, programmes, and projects. Its purpose is to ensure that public money delivers the best value. It outlines the ROAMEF cycle: Rationale, Objectives, Appraisal, Monitoring, Evaluation, and Feedback. Key principles include considering all realistic options, calculating costs and benefits, accounting for risks, and considering who gains and loses from a proposal.",
-            "ministerial_briefings": "Ministerial briefings are concise documents prepared by civil servants to inform ministers and enable them to make decisions. A standard format often includes a summary page (issue, recommendation, timing, background) and a detail page (key considerations, options analysis, financial/legal implications, communications handling). Golden rules for briefings include being concise (typically 2 pages max), leading with the recommendation, using plain English, including only essential information, and dating/classifying appropriately.",
-            "policy_development": "Policy development in the Civil Service involves identifying issues, gathering evidence, defining problems, developing and assessing alternative options, presenting recommendations to ministers for decision, implementing the chosen policy, and finally reviewing and evaluating its effectiveness. Key tools used include the Green Book for economic appraisal, the Magenta Book for evaluation methods, and the Aqua Book for quality analysis. Civil servants advise, while ministers decide.",
-            "data_protection_act_2018": "The Data Protection Act 2018 (DPA 2018) is the UK's implementation of the General Data Protection Regulation (GDPR). It controls how personal information is used by organisations, businesses, or the government. It sets out rights for individuals regarding their data and obligations for those who process data. Key principles include lawfulness, fairness and transparency, purpose limitation, data minimisation, accuracy, storage limitation, integrity and confidentiality, and accountability.",
-            "parliamentary_process": "The parliamentary process in the UK involves the legislative journey of a bill from its introduction to becoming an Act of Parliament. This typically includes first reading, second reading (debate on general principles), committee stage (detailed scrutiny), report stage (further amendments), and third reading (final debate). After passing both the House of Commons and the House of Lords, a bill receives Royal Assent and becomes law.",
-            "public_sector_equality_duty": "The Public Sector Equality Duty (PSED) is part of the Equality Act 2010. It requires public bodies, in the exercise of their functions, to have due regard to the need to: eliminate discrimination, advance equality of opportunity, and foster good relations between persons who share a relevant protected characteristic and persons who do not share it. Protected characteristics include age, disability, gender reassignment, marriage and civil partnership, pregnancy and maternity, race, religion or belief, sex, and sexual orientation.",
-            "freedom_of_information_act": "The Freedom of Information Act 2000 (FOIA) gives members of the public a right of access to information held by public authorities. It promotes transparency and accountability by allowing individuals to request information, which must be provided unless an exemption applies. Public authorities are also required to proactively publish certain information.",
-            "devolution_uk": "Devolution in the UK refers to the statutory granting of powers from the Parliament of the United Kingdom to the Scottish Parliament, the Senedd (Welsh Parliament), and the Northern Ireland Assembly. This means these bodies have the power to make laws on certain matters specific to their regions, while Westminster retains control over reserved matters like defence and foreign policy."
+            "civil_service_overview": {"content": "The UK Civil Service is the permanent executive arm of His Majesty's Government. It supports the government of the day in developing and implementing policies, delivering public services, and supporting British interests abroad. Civil servants are politically impartial and serve the government of the day, whatever its political persuasion. Key values include integrity, honesty, objectivity, and impartiality.", "url": "https://www.gov.uk/government/organisations/civil-service/about"},
+            "civil_service_code": {"content": "The Civil Service Code sets out the core values and standards of behaviour expected of all civil servants. These values are: Integrity (putting public service before personal interests), Honesty (being truthful and open), Objectivity (basing advice and decisions on evidence), and Impartiality (acting solely according to the merits of the case). The Code requires civil servants to serve the government of the day, act in a way that deserves public trust, comply with the law, and not misuse official position or information.", "url": "https://www.gov.uk/government/publications/civil-service-code"},
+            "green_book": {"content": "The Green Book is HM Treasury guidance on how to appraise policies, programmes, and projects. Its purpose is to ensure that public money delivers the best value. It outlines the ROAMEF cycle: Rationale, Objectives, Appraisal, Monitoring, Evaluation, and Feedback. Key principles include considering all realistic options, calculating costs and benefits, accounting for risks, and considering who gains and loses from a proposal.", "url": "https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government"},
+            "ministerial_briefings": {"content": "Ministerial briefings are concise documents prepared by civil servants to inform ministers and enable them to make decisions. A standard format often includes a summary page (issue, recommendation, timing, background) and a detail page (key considerations, options analysis, financial/legal implications, communications handling). Golden rules for briefings include being concise (typically 2 pages max), leading with the recommendation, using plain English, including only essential information, and dating/classifying appropriately.", "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/60943/Ministerial_Code_2010.pdf"},
+            "policy_development": {"content": "Policy development in the Civil Service involves identifying issues, gathering evidence, defining problems, developing and assessing alternative options, presenting recommendations to ministers for decision, implementing the chosen policy, and finally reviewing and evaluating its effectiveness. Key tools used include the Green Book for economic appraisal, the Magenta Book for evaluation methods, and the Aqua Book for quality analysis. Civil servants advise, while ministers decide.", "url": "https://www.gov.uk/government/publications/policy-making-a-guide-for-civil-servants"},
+            "data_protection_act_2018": {"content": "The Data Protection Act 2018 (DPA 2018) is the UK's implementation of the General Data Protection Regulation (GDPR). It controls how personal information is used by organisations, businesses, or the government. It sets out rights for individuals regarding their data and obligations for those who process data. Key principles include lawfulness, fairness and transparency, purpose limitation, data minimisation, accuracy, storage limitation, integrity and confidentiality, and accountability.", "url": "https://www.gov.uk/government/collections/data-protection-act-2018"},
+            "parliamentary_process": {"content": "The parliamentary process in the UK involves the legislative journey of a bill from its introduction to becoming an Act of Parliament. This typically includes first reading, second reading (debate on general principles), committee stage (detailed scrutiny), report stage (further amendments), and third reading (final debate). After passing both the House of Commons and the House of Lords, a bill receives Royal Assent and becomes law.", "url": "https://www.parliament.uk/about/how/laws/passage-bill/"},
+            "public_sector_equality_duty": {"content": "The Public Sector Equality Duty (PSED) is part of the Equality Act 2010. It requires public bodies, in the exercise of their functions, to have due regard to the need to: eliminate discrimination, advance equality of opportunity, and foster good relations between persons who share a relevant protected characteristic and persons who do not share it. Protected characteristics include age, disability, gender reassignment, marriage and civil partnership, pregnancy and maternity, race, religion or belief, sex, and sexual orientation.", "url": "https://www.equalityhumanrights.com/our-work/public-sector-equality-duty"},
+            "freedom_of_information_act": {"content": "The Freedom of Information Act 2000 (FOIA) gives members of the public a right of access to information held by public authorities. It promotes transparency and accountability by allowing individuals to request information, which must be provided unless an exemption applies. Public authorities are also required to proactively publish certain information.", "url": "https://www.gov.uk/make-a-freedom-of-information-request"},
+            "devolution_uk": {"content": "Devolution in the UK refers to the statutory granting of powers from the Parliament of the United Kingdom to the Scottish Parliament, the Senedd (Welsh Parliament), and the Northern Ireland Assembly. This means these bodies have the power to make laws on certain matters specific to their regions, while Westminster retains control over reserved matters like defence and foreign policy.", "url": "https://www.parliament.uk/about/how/uk-government/devolution/"}
         }
 
     def query(self, query_text: str, k: int = 5) -> Dict[str, Any]:
@@ -99,11 +105,13 @@ class StudSAREngine:
         
         return query
     
-    def _score_entries(self, query_lower: str, query_words: set) -> List[Tuple[float, str, str]]:
+    def _score_entries(self, query_lower: str, query_words: set) -> List[Tuple[float, str, str, str]]:
         """Score knowledge base entries with enhanced algorithm."""
         scored_entries = []
         
-        for key, content in self.knowledge_base.items():
+        for key, data in self.knowledge_base.items():
+            content = data['content']
+            url = data['url']
             score = 0.0
             content_lower = content.lower()
             
@@ -125,7 +133,7 @@ class StudSAREngine:
             score += self._calculate_semantic_relevance(query_words, content_words)
             
             if score > 0:
-                scored_entries.append((score, content, key))
+                scored_entries.append((score, content, key, url))
         
         return scored_entries
     
@@ -166,7 +174,7 @@ class StudSAREngine:
         else:
             return 'general'
     
-    def _generate_enhanced_response(self, query: str, scored_entries: List[Tuple[float, str, str]]) -> Tuple[str, float]:
+    def _generate_enhanced_response(self, query: str, scored_entries: List[Tuple[float, str, str, str]]) -> Tuple[str, float]:
         """Generate enhanced response based on query type and retrieved content."""
         min_threshold = 10 # Increased threshold for higher relevance
         selected_entries = [entry for entry in scored_entries if entry[0] >= min_threshold]
@@ -193,10 +201,11 @@ class StudSAREngine:
         
         return answer, confidence
     
-    def _generate_definition_response(self, query: str, entries: List[Tuple[float, str, str]]) -> str:
+    def _generate_definition_response(self, query: str, entries: List[Tuple[float, str, str, str]]) -> str:
         """Generate a definition-style response with more context."""
         top_content = entries[0][1]
         title = entries[0][2].replace('_', ' ').title()
+        url = entries[0][3]
         
         # Attempt to extract a concise definition
         definition_match = re.search(r'^(.*?\.)', top_content)
@@ -208,20 +217,20 @@ class StudSAREngine:
         
         if len(entries) > 1:
             answer += "**Related Information:**\n"
-            for _, content, key in entries[1:3]:  # Include up to 2 more entries
+            for _, content, key, related_url in entries[1:3]:  # Include up to 2 more entries
                 related_title = key.replace('_', ' ').title()
                 related_summary = content.split('.')[0] + '.' if content.split('.') else content
-                answer += f"• **{related_title}:** {related_summary}\n"
+                answer += f"• **{related_title}:** {related_summary} [Link]({related_url})\n"
         
-        answer += "\n*This information is retrieved from the StudSAR knowledge base.*"
+        answer += f"\n*This information is retrieved from the StudSAR knowledge base. For more details, visit: [Official Source]({url})*"
         return answer
     
-    def _generate_process_response(self, query: str, entries: List[Tuple[float, str, str]]) -> str:
+    def _generate_process_response(self, query: str, entries: List[Tuple[float, str, str, str]]) -> str:
         """Generate a process-oriented response with clear steps."""
         answer = f"### Understanding the Process for: {query}\n\n"
         
-        for i, (score, content, key) in enumerate(entries[:2]):
-            answer += f"#### {i+1}. {key.replace('_', ' ').title()}\n"
+        for i, (score, content, key, url) in enumerate(entries[:2]):
+            answer += f"#### {i+1}. {key.replace('_', ' ').title()} [Link]({url})\n"
             # Attempt to break down content into steps/points
             points = [p.strip() for p in re.split(r'\d+\.', content) if p.strip()]
             if not points:
@@ -237,14 +246,15 @@ class StudSAREngine:
         answer += "*This information is retrieved from the StudSAR knowledge base.*"
         return answer
     
-    def _generate_list_response(self, query: str, entries: List[Tuple[float, str, str]]) -> str:
+    def _generate_list_response(self, query: str, entries: List[Tuple[float, str, str, str]]) -> str:
         """Generate a list-style response with clear enumeration."""
         answer = f"### Key Points and Principles for: {query}\n\n"
         
         top_content = entries[0][1]
         title = entries[0][2].replace('_', ' ').title()
+        url = entries[0][3]
         
-        answer += f"#### From {title}:\n"
+        answer += f"#### From {title}: [Link]({url})\n"
         sentences = [s.strip() for s in top_content.split('.') if s.strip()]
         key_points = [s for s in sentences if len(s) > 20][:5] # Get up to 5 meaningful sentences
         
@@ -256,44 +266,45 @@ class StudSAREngine:
         
         if len(entries) > 1:
             answer += "\n**Additional Relevant Information:**\n"
-            for _, content, key in entries[1:3]:
+            for _, content, key, related_url in entries[1:3]:
                 related_title = key.replace('_', ' ').title()
                 related_summary = content.split('.')[0] + '.' if content.split('.') else content
-                answer += f"• **{related_title}:** {related_summary}\n"
+                answer += f"• **{related_title}:** {related_summary} [Link]({related_url})\n"
         
         answer += "\n*This information is retrieved from the StudSAR knowledge base.*"
         return answer
     
-    def _generate_example_response(self, query: str, entries: List[Tuple[float, str, str]]) -> str:
+    def _generate_example_response(self, query: str, entries: List[Tuple[float, str, str, str]]) -> str:
         """Generate an example-oriented response with practical insights."""
         answer = f"### Examples and Practical Guidance for: {query}\n\n"
         
-        for i, (score, content, key) in enumerate(entries[:2]):
-            answer += f"#### {i+1}. {key.replace('_', ' ').title()}\n"
+        for i, (score, content, key, url) in enumerate(entries[:2]):
+            answer += f"#### {i+1}. {key.replace('_', ' ').title()} [Link]({url})\n"
             answer += f"{content}\n\n"
         
         answer += "*This information is retrieved from the StudSAR knowledge base.*"
         return answer
     
-    def _generate_general_response(self, query: str, entries: List[Tuple[float, str, str]]) -> str:
+    def _generate_general_response(self, query: str, entries: List[Tuple[float, str, str, str]]) -> str:
         """Generate a general response with a clear summary and detailed section."""
         top_content = entries[0][1]
         title = entries[0][2].replace('_', ' ').title()
+        url = entries[0][3]
         
         # Attempt to create a more sophisticated summary
         summary_sentences = [s.strip() for s in top_content.split('.') if s.strip()][:3] # First 3 sentences
         summary = ' '.join(summary_sentences) + ('.' if summary_sentences and not summary_sentences[-1].endswith('.') else '')
         
-        answer = f"Based on your query about \'{query}\', here is the most relevant information from **{title}**:\n\n"
+        answer = f"Based on your query about \'{query}\\' from **{title}**: [Link]({url})\n\n"
         answer += f"**Summary:** {summary}\n\n"
         answer += f"**Detailed Information:**\n{top_content}\n\n"
         
         if len(entries) > 1:
             answer += "**Additional Related Information:**\n"
-            for _, content, key in entries[1:3]:
+            for _, content, key, related_url in entries[1:3]:
                 related_title = key.replace('_', ' ').title()
                 related_summary = content.split('.')[0] + '.' if content.split('.') else content
-                answer += f"• **{related_title}:** {related_summary}\n"
+                answer += f"• **{related_title}:** {related_summary} [Link]({related_url})\n"
         
         answer += "\n*This information is retrieved from the StudSAR knowledge base.*"
         return answer
@@ -323,21 +334,22 @@ To get the best results, please try rephrasing your question or ask about one of
 
 I'm here to help you navigate the complexities of the UK Civil Service. Please ask a specific question and I'll do my best to provide detailed guidance."""
     
-    def _prepare_sources(self, scored_entries: List[Tuple[float, str, str]]) -> List[Dict[str, Any]]:
+    def _prepare_sources(self, scored_entries: List[Tuple[float, str, str, str]]) -> List[Dict[str, Any]]:
         """Prepare sources with enhanced metadata."""
         sources = []
         if not scored_entries:
             return sources
 
-        max_score = max(score for score, _, _ in scored_entries)
+        max_score = max(score for score, _, _, _ in scored_entries)
         
-        for score, content, key in scored_entries:
+        for score, content, key, url in scored_entries:
             sources.append({
                 'content': content,
                 'similarity': score / max(1, max_score), # Normalize similarity between 0 and 1
                 'title': key.replace('_', ' ').title(),
                 'key': key,
-                'relevance_score': score
+                'relevance_score': score,
+                'url': url
             })
         
         return sources
