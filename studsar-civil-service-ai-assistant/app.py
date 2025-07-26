@@ -302,13 +302,14 @@ with st.sidebar:
     # Statistics
     st.markdown("### 📊 Knowledge Base Stats")
     total_topics = len(st.session_state.studsar_engine.knowledge_base)
-    query_count = len(st.session_state.studsar_engine.get_query_history())
+    # Comment out the problematic query_count line
+    # query_count = len(st.session_state.studsar_engine.get_query_history())
     
     col1, col2 = st.columns(2)
     with col1:
         st.metric("Topics", total_topics)
-    with col2:
-        st.metric("Queries", query_count)
+    # with col2:
+    #     st.metric("Queries", query_count)
     
     # Help section
     st.markdown("### ❓ Help")
@@ -466,7 +467,7 @@ if 'next_query' in st.session_state and st.session_state.next_query:
         st.markdown(prompt)
     
     # Process and display assistant response
-    process_query(prompt)
+    process_query(power)
 
 # Handle user input
 if prompt := st.chat_input("Ask me anything about the UK Civil Service..."):
