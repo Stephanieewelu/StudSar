@@ -9,12 +9,12 @@ from typing import Dict, List
 project_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, project_root)
 
-# Import the enhanced StudSAREngine
-from enhanced_studsar_engine import EnhancedStudSAREngine
+# Import the updated StudSAREngine
+from studsar_rag import StudSAREngine
 
 # Initialize session state variables
 if 'studsar_engine' not in st.session_state:
-    st.session_state.studsar_engine = EnhancedStudSAREngine()
+    st.session_state.studsar_engine = StudSAREngine()
 
 if 'messages' not in st.session_state:
     st.session_state.messages = []
@@ -232,14 +232,14 @@ st.markdown("""
 if st.session_state.show_onboarding:
     st.markdown("""
     <div class="onboarding-modal">
-        <h2>🎉 Welcome to StudSAR Civil Service AI Assistant!</h2>
+        <h2> Welcome to StudSAR Civil Service AI Assistant!</h2>
         <p><strong>Getting Started:</strong></p>
         <ul>
-            <li>🎯 Use the <strong>Quick Queries</strong> in the sidebar for common questions</li>
-            <li>💬 Type your own questions in the chat box below</li>
-            <li>📚 Enable <strong>"Show source details"</strong> to see how answers are generated</li>
-            <li>⭐ Rate responses to help improve the system</li>
-            <li>🔍 Check the <strong>confidence score</strong> to gauge answer reliability</li>
+            <li> Use the <strong>Quick Queries</strong> in the sidebar for common questions</li>
+            <li> Type your own questions in the chat box below</li>
+            <li> Enable <strong>"Show source details"</strong> to see how answers are generated</li>
+            <li> Rate responses to help improve the system</li>
+            <li> Check the <strong>confidence score</strong> to gauge answer reliability</li>
         </ul>
         <p><em>StudSAR uses Retrieval-Augmented Generation (RAG) to provide accurate, source-backed answers about UK Civil Service topics.</em></p>
     </div>
@@ -265,7 +265,7 @@ st.markdown("""
 
 # Sidebar with enhanced features
 with st.sidebar:
-    st.markdown("### 🎯 Quick Queries")
+    st.markdown("### Quick Queries")
     
     example_queries = {
         "What is the Civil Service?": "Learn about the UK Civil Service structure and role",
@@ -281,7 +281,7 @@ with st.sidebar:
     }
     
     for query, description in example_queries.items():
-        if st.button(f"📋 {query}", help=description, key=f"btn_{hash(query)}"):
+        if st.button(f" {query}", help=description, key=f"btn_{hash(query)}"):
             st.session_state.next_query = query
     
     st.markdown("---")
@@ -295,23 +295,20 @@ with st.sidebar:
         st.session_state.studsar_engine.clear_history()
         st.rerun()
     
-    if st.button("🎓 Show Onboarding Again"):
+    if st.button(" Show Onboarding Again"):
         st.session_state.show_onboarding = True
         st.rerun()
     
     # Statistics
-    st.markdown("### 📊 Knowledge Base Stats")
+    st.markdown("### Knowledge Base Stats")
     total_topics = len(st.session_state.studsar_engine.knowledge_base)
-    query_count = len(st.session_state.studsar_engine.get_query_history())
     
     col1, col2 = st.columns(2)
     with col1:
         st.metric("Topics", total_topics)
-    with col2:
-        st.metric("Queries", query_count)
     
     # Help section
-    st.markdown("### ❓ Help")
+    st.markdown("### Help")
     with st.expander("How to use StudSAR"):
         st.markdown("""
         **Tips for better results:**
@@ -341,7 +338,7 @@ with st.sidebar:
 
     st.markdown("---")
     # About section with citation and RAG verification
-    st.markdown("### ℹ️ About StudSAR")
+    st.markdown("### About StudSAR")
     with st.expander("About this application"):
         st.markdown("""
         This application is powered by **StudSAR**, a Neural Associative Memory System for Artificial Intelligence. 
@@ -394,7 +391,7 @@ for i, message in enumerate(st.session_state.messages):
             
             # Display sources if enabled
             if st.session_state.show_sources and message["metadata"].get("sources"):
-                with st.expander(f"📚 Sources ({len(message['metadata']['sources'])} found)"):
+                with st.expander(f" Sources ({len(message['metadata']['sources'])} found)"):
                     for j, source in enumerate(message["metadata"]["sources"]):
                         st.markdown(f"""
                         <div class="source-card">
@@ -410,7 +407,7 @@ for i, message in enumerate(st.session_state.messages):
 def process_query(prompt: str):
     """Process a query and display the response."""
     with st.chat_message("assistant"):
-        with st.spinner("🔍 Analyzing your query..."):
+        with st.spinner(" Analyzing your query..."):
             response_data = st.session_state.studsar_engine.query(prompt)
             answer = response_data.get('answer', 'I apologize, but I could not process that request.')
             sources = response_data.get('sources', [])
