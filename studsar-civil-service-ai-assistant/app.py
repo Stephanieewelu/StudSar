@@ -9,12 +9,12 @@ from typing import Dict, List
 project_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, project_root)
 
-# Import the updated StudSAREngine
-from studsar_rag import StudSAREngine
+# Import the enhanced StudSAREngine
+from enhanced_studsar_engine import EnhancedStudSAREngine
 
 # Initialize session state variables
 if 'studsar_engine' not in st.session_state:
-    st.session_state.studsar_engine = StudSAREngine()
+    st.session_state.studsar_engine = EnhancedStudSAREngine()
 
 if 'messages' not in st.session_state:
     st.session_state.messages = []
@@ -302,14 +302,13 @@ with st.sidebar:
     # Statistics
     st.markdown("### 📊 Knowledge Base Stats")
     total_topics = len(st.session_state.studsar_engine.knowledge_base)
-    # Comment out the problematic query_count line
-    # query_count = len(st.session_state.studsar_engine.get_query_history())
+    query_count = len(st.session_state.studsar_engine.get_query_history())
     
     col1, col2 = st.columns(2)
     with col1:
         st.metric("Topics", total_topics)
-    # with col2:
-    #     st.metric("Queries", query_count)
+    with col2:
+        st.metric("Queries", query_count)
     
     # Help section
     st.markdown("### ❓ Help")
@@ -402,6 +401,7 @@ for i, message in enumerate(st.session_state.messages):
                             <strong>Source {j+1}: {source.get("title", "N/A")}</strong><br>
                             <small>Similarity: {source.get("similarity", 0):.3f} | Relevance Score: {source.get("relevance_score", 0):.1f}</small><br>
                             {source.get("content", "No content available.")}
+                            {f'<p><a href="{source.get("url", "#")}" target="_blank">View Source</a></p>' if source.get("url") else ''}
                         </div>
                         """, unsafe_allow_html=True)
         else:
@@ -453,6 +453,7 @@ def process_query(prompt: str):
                             <strong>Source {i+1}: {source.get("title", "N/A")}</strong><br>
                             <small>Similarity: {source.get("similarity", 0):.3f} | Relevance Score: {source.get("relevance_score", 0):.1f}</small><br>
                             {source.get("content", "No content available.")}
+                            {f'<p><a href="{source.get("url", "#")}" target="_blank">View Source</a></p>' if source.get("url") else ''}
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -467,7 +468,7 @@ if 'next_query' in st.session_state and st.session_state.next_query:
         st.markdown(prompt)
     
     # Process and display assistant response
-    process_query(power)
+    process_query(prompt)
 
 # Handle user input
 if prompt := st.chat_input("Ask me anything about the UK Civil Service..."):
