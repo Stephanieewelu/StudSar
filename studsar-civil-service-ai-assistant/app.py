@@ -9,12 +9,12 @@ from typing import Dict, List
 project_root = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, project_root)
 
-# Import the enhanced StudSAREngine
-from enhanced_studsar_engine import EnhancedStudSAREngine
+# Import the updated StudSAREngine
+from studsar_rag import StudSAREngine
 
 # Initialize session state variables
 if 'studsar_engine' not in st.session_state:
-    st.session_state.studsar_engine = EnhancedStudSAREngine()
+    st.session_state.studsar_engine = StudSAREngine()
 
 if 'messages' not in st.session_state:
     st.session_state.messages = []
