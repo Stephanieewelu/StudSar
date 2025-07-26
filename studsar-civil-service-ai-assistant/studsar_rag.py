@@ -3,7 +3,7 @@ import re
 import os
 from typing import Dict, List, Tuple, Any
 
-class EnhancedStudSAREngine:
+class StudSAREngine:
     """Enhanced StudSAR RAG implementation with improved features."""
     
     def __init__(self, knowledge_base_path: str = "knowledge_base.json"):
