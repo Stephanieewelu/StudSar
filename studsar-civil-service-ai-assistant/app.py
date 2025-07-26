@@ -247,11 +247,11 @@ if st.session_state.show_onboarding:
     
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("🚀 Get Started", type="primary"):
+        if st.button("Get Started", type="primary"):
             st.session_state.show_onboarding = False
             st.rerun()
     with col2:
-        if st.button("ℹ️ Show this again later"):
+        if st.button("Show this again later"):
             st.session_state.show_onboarding = False
             st.rerun()
 
@@ -290,7 +290,7 @@ with st.sidebar:
     st.markdown("### ⚙️ Settings")
     st.session_state.show_sources = st.checkbox("Show source details", value=st.session_state.show_sources)
     
-    if st.button("🔄 Clear Chat History"):
+    if st.button("Clear Chat History"):
         st.session_state.messages = []
         st.session_state.studsar_engine.clear_history()
         st.rerun()
@@ -443,7 +443,7 @@ def process_query(prompt: str):
             
             # Display sources if enabled
             if st.session_state.show_sources and sources:
-                with st.expander(f"📚 Sources ({len(sources)} found)"):
+                with st.expander(f"Sources ({len(sources)} found)"):
                     for i, source in enumerate(sources):
                         st.markdown(f"""
                         <div class="source-card">
