@@ -1,0 +1,42 @@
+{
+    "civil_service_overview": {
+        "content": "The UK Civil Service is the permanent executive arm of His Majesty's Government. It supports the government of the day in developing and implementing policies, delivering public services, and supporting British interests abroad. Civil servants are politically impartial and serve the government of the day, whatever its political persuasion. Key values include integrity, honesty, objectivity, and impartiality.",
+        "url": "https://www.gov.uk/government/organisations/civil-service/about"
+    },
+    "civil_service_code": {
+        "content": "The Civil Service Code sets out the core values and standards of behaviour expected of all civil servants. These values are: Integrity (putting public service before personal interests), Honesty (being truthful and open), Objectivity (basing advice and decisions on evidence), and Impartiality (acting solely according to the merits of the case). The Code requires civil servants to serve the government of the day, act in a way that deserves public trust, comply with the law, and not misuse official position or information.",
+        "url": "https://www.gov.uk/government/publications/civil-service-code"
+    },
+    "green_book": {
+        "content": "The Green Book is HM Treasury guidance on how to appraise policies, programmes, and projects. Its purpose is to ensure that public money delivers the best value. It outlines the ROAMEF cycle: Rationale, Objectives, Appraisal, Monitoring, Evaluation, and Feedback. Key principles include considering all realistic options, calculating costs and benefits, accounting for risks, and considering who gains and loses from a proposal.",
+        "url": "https://www.gov.uk/government/publications/the-green-book-appraisal-and-evaluation-in-central-government"
+    },
+    "ministerial_briefings": {
+        "content": "Ministerial briefings are concise documents prepared by civil servants to inform ministers and enable them to make decisions. A standard format often includes a summary page (issue, recommendation, timing, background) and a detail page (key considerations, options analysis, financial/legal implications, communications handling). Golden rules for briefings include being concise (typically 2 pages max), leading with the recommendation, using plain English, including only essential information, and dating/classifying appropriately.",
+        "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/60943/Ministerial_Code_2010.pdf"
+    },
+    "policy_development": {
+        "content": "Policy development in the Civil Service involves identifying issues, gathering evidence, defining problems, developing and assessing alternative options, presenting recommendations to ministers for decision, implementing the chosen policy, and finally reviewing and evaluating its effectiveness. Key tools used include the Green Book for economic appraisal, the Magenta Book for evaluation methods, and the Aqua Book for quality analysis. Civil servants advise, while ministers decide.",
+        "url": "https://www.gov.uk/government/publications/policy-making-a-guide-for-civil-servants"
+    },
+    "data_protection_act_2018": {
+        "content": "The Data Protection Act 2018 (DPA 2018) is the UK's implementation of the General Data Protection Regulation (GDPR). It controls how personal information is used by organisations, businesses, or the government. It sets out rights for individuals regarding their data and obligations for those who process data. Key principles include lawfulness, fairness and transparency, purpose limitation, data minimisation, accuracy, storage limitation, integrity and confidentiality, and accountability.",
+        "url": "https://www.gov.uk/government/collections/data-protection-act-2018"
+    },
+    "parliamentary_process": {
+        "content": "The parliamentary process in the UK involves the legislative journey of a bill from its introduction to becoming an Act of Parliament. This typically includes first reading, second reading (debate on general principles), committee stage (detailed scrutiny), report stage (further amendments), and third reading (final debate). After passing both the House of Commons and the House of Lords, a bill receives Royal Assent and becomes law.",
+        "url": "https://www.parliament.uk/about/how/laws/passage-bill/"
+    },
+    "public_sector_equality_duty": {
+        "content": "The Public Sector Equality Duty (PSED) is part of the Equality Act 2010. It requires public bodies, in the exercise of their functions, to have due regard to the need to: eliminate discrimination, advance equality of opportunity, and foster good relations between persons who share a relevant protected characteristic and persons who do not share it. Protected characteristics include age, disability, gender reassignment, marriage and civil partnership, pregnancy and maternity, race, religion or belief, sex, and sexual orientation.",
+        "url": "https://www.equalityhumanrights.com/our-work/public-sector-equality-duty"
+    },
+    "freedom_of_information_act": {
+        "content": "The Freedom of Information Act 2000 (FOIA) gives members of the public a right of access to information held by public authorities. It promotes transparency and accountability by allowing individuals to request information, which must be provided unless an exemption applies. Public authorities are also required to proactively publish certain information.",
+        "url": "https://www.gov.uk/make-a-freedom-of-information-request"
+    },
+    "devolution_uk": {
+        "content": "Devolution in the UK refers to the statutory granting of powers from the Parliament of the United Kingdom to the Scottish Parliament, the Senedd (Welsh Parliament), and the Northern Ireland Assembly. This means these bodies have the power to make laws on certain matters specific to their regions, while Westminster retains control over reserved matters like defence and foreign policy.",
+        "url": "https://www.parliament.uk/about/how/uk-government/devolution/"
+    }
+}
